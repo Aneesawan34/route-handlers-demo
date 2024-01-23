@@ -1,6 +1,17 @@
+import { redirect } from "next/navigation";
 import { comments } from "../data";
 interface PARAMS {
   params: { id: string };
+}
+
+export async function GET(_request: Request, { params }: PARAMS) {
+  const findIndex = comments.findIndex(
+    (comment) => comment.id === parseInt(params.id)
+  );
+  if (findIndex < 0) {
+    return redirect("/comments");
+  }
+  return Response.json(comments[findIndex]);
 }
 export async function PUT(request: Request, { params }: PARAMS) {
   const body = await request.json();
